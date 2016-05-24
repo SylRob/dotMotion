@@ -1,0 +1,34 @@
+/**
+*https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/onepgscr-4.jpg
+*https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/onepgscr-5.jpg
+*https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/onepgscr-6.jpg
+*https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/onepgscr-7.jpg
+*https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/onepgscr-8.jpg
+*
+*/
+
+body {
+    overflow: hidden;
+}
+
+#mainWrapper {
+    width: 1400px;
+    height: 789px;
+    background-color: blue;
+    position: relative;
+}
+
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -50px;
+    z-index: 10;
+}
+
+/* helper */
+
+.hide {
+    display: none;
+}
