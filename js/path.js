@@ -93,13 +93,11 @@ var Path = (function () {
             var curvDist = distance - this.lengthBeforCurve;
             var p = (curvDist / this.lengthOfCurve01);
             var points = this.curve01.get(p);
-            console.log(p, points, 'curve01');
         }
         else {
             var curvDist = distance - (this.lengthBeforCurve + this.lengthOfCurve01);
             var p = (curvDist / this.lengthOfCurve02);
             var points = this.curve02.get(p);
-            console.log(p, points, 'curve02');
         }
         return points;
     };
