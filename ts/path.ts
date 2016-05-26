@@ -58,7 +58,7 @@ class Path {
         return this.l;
     }
 
-    public generateLoop() {
+    public generateLoop( upsidown:boolean ) {
 
         this.startPointX = this.x1;
         this.startPointY = this.y1;
@@ -77,10 +77,15 @@ class Path {
         var m2 = -1/this.m;
         var p2 = segCenter.y - m2 * segCenter.x;
 
-        var perpandX0 = 0;
-        var perpandY0 = p2;
+        /*if( upsidown ) {
+            var perpandX0 = (p2*-1)/m2;
+            var perpandY0 = 0;
+        } else {*/
+            var perpandX0 = 0;
+            var perpandY0 = p2;
+        /*}*/
 
-        var depX = segCenter.x;
+        var depX = segCenter.x - perpandX0;
         var depY = segCenter.y - perpandY0;
 
         var l2 = Math.round( Math.sqrt(  Math.pow(segCenter.x-perpandX0, 2) + Math.pow(segCenter.y-perpandY0, 2)  ) );

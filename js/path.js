@@ -18,7 +18,7 @@ var Path = (function () {
     Path.prototype.getLenght = function () {
         return this.l;
     };
-    Path.prototype.generateLoop = function () {
+    Path.prototype.generateLoop = function (upsidown) {
         this.startPointX = this.x1;
         this.startPointY = this.y1;
         this.endPointX = this.x2;
@@ -31,7 +31,7 @@ var Path = (function () {
         var p2 = segCenter.y - m2 * segCenter.x;
         var perpandX0 = 0;
         var perpandY0 = p2;
-        var depX = segCenter.x;
+        var depX = segCenter.x - perpandX0;
         var depY = segCenter.y - perpandY0;
         var l2 = Math.round(Math.sqrt(Math.pow(segCenter.x - perpandX0, 2) + Math.pow(segCenter.y - perpandY0, 2)));
         this.perpandX = segCenter.x + (this.l / l2) * depX;
