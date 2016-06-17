@@ -1,13 +1,15 @@
 var MainController = (function () {
-    function MainController(idName, dotsDataList, animationTime) {
+    function MainController(idName, animationTime) {
         this.currentIteration = 0;
         this.animationTime = 1000;
-        this.dotsDataList = dotsDataList;
         this.initCanvas(idName);
         this.animationTime = animationTime || this.animationTime;
         this.totalIteration = (this.animationTime / 1000) * 60;
-        this.initDotsAndPaths();
     }
+    MainController.prototype.addDotsDataList = function (dotsDataList) {
+        this.dotsDataList = dotsDataList;
+        this.initDotsAndPaths();
+    };
     MainController.prototype.initCanvas = function (idName) {
         this.canvasElem = document.createElement('canvas');
         this.canvasWrapper = document.getElementById(idName);
@@ -74,6 +76,8 @@ var MainController = (function () {
             else
                 distance = this.easeOutCubic(dotActualItteration, 0, path.l, finalIteration);
             var p = path.getPoint(distance);
+            if (typeof p == "undefined")
+                continue;
             dot.moveTo(dot.r, p.x, p.y);
             if (pour >= 1) {
                 data.animationFinished = true;
@@ -115,7 +119,30 @@ window.onload = function () {
         }
         return arr;
     }
-    var c = new MainController('mainWrapper', generateRandom(1000), 1000);
-    document.querySelector('#mainWrapper .loading').remove();
-    setTimeout(function () { c.animate(); }, 1000);
+    function generateFromList(pointList) {
+        var arr = [];
+        var colorArr = ['#00dad7', '#15da00', '#da6100', '#c800da', '#00dad7', '#15da00', '#da6100', '#c800da'];
+        for (var f = 0; f < pointList.length; f++) {
+            var obj = {
+                type: 'circle',
+                s: Math.random() * (6 - 3) + 3,
+                x: Math.random() * 1400,
+                y: Math.random() * 789,
+                color: colorArr[Math.floor(Math.random() * colorArr.length)],
+                x2: pointList[f][0] + 100,
+                y2: pointList[f][1] + 200,
+                delay: Math.random() * 2600
+            };
+            arr.push(obj);
+        }
+        return arr;
+    }
+    var c = new MainController('mainWrapper', 1000);
+    var svgHandeler = new SvgHandeler();
+    svgHandeler.load('img/PeaceInc.svg').then(function () {
+        var pointsRaw = svgHandeler.listPointProportional(0);
+        var points = generateFromList(pointsRaw);
+        c.addDotsDataList(points);
+        setTimeout(function () { c.animate(); }, 1000);
+    });
 };

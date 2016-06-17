@@ -12,13 +12,18 @@ class MainController {
     private dotsObjectList:Array<Dot>;
     private pathsObjectList:Array<Path>;
 
-    constructor( idName:string, dotsDataList:Array<any>, animationTime:number ) {
-        this.dotsDataList = dotsDataList;
-        this.initCanvas( idName );
+    constructor( idName:string, animationTime:number ) {
 
+        this.initCanvas( idName );
         this.animationTime = animationTime || this.animationTime;
         this.totalIteration = (this.animationTime/1000) * 60;
+    }
+
+    public addDotsDataList( dotsDataList:Array<any> ) {
+
+        this.dotsDataList = dotsDataList;
         this.initDotsAndPaths();
+
     }
 
     private initCanvas( idName:string ) {
@@ -103,6 +108,7 @@ class MainController {
             } else distance = this.easeOutCubic( dotActualItteration, 0, path.l, finalIteration );
 
             var p = path.getPoint( distance );
+            if( typeof p == "undefined" ) continue;
             dot.moveTo( dot.r ,p.x, p.y );
 
             if( pour >= 1 ) {
@@ -156,27 +162,40 @@ window.onload = function() {
         return arr;
     }
 
+    function generateFromList( pointList:Array<number> ) {
 
-    /*var c = new MainController(
-        'mainWrapper',
-        [
-            { type: 'circle', s: 12, x: 120, y: 130, color: '#00dad7', x2: 700, y2: 380, upsidown: true },
-            { type: 'circle', s: 12, x: 240, y: 220, color: '#15da00', x2: 740, y2: 380, delay: 400 },
-            { type: 'circle', s: 12, x: 580, y: 550, color: '#da6100', x2: 660, y2: 380, delay: 800 },
-            { type: 'circle', s: 12, x: 850, y: 300, color: '#c800da', x2: 620, y2: 380, delay: 1200 },
-            { type: 'circle', s: 14, x: 200, y: 80, color: '#00dad7', x2: 700, y2: 380, delay: 1600 },
-            { type: 'circle', s: 18, x: 950, y: 50, color: '#15da00', x2: 740, y2: 380, delay: 2000 },
-            { type: 'circle', s: 20, x: 1200, y: 700, color: '#da6100', x2: 660, y2: 380, delay: 2400 },
-            { type: 'circle', s: 24, x: 20, y: 600, color: '#c800da', x2: 620, y2: 380, delay: 2600 }
-        ],
-        1000
-    );*/
+        var arr = [];
+        var colorArr = ['#00dad7', '#15da00', '#da6100', '#c800da', '#00dad7', '#15da00', '#da6100', '#c800da']
+
+        for( var f = 0; f < pointList.length; f++ ) {
+            var obj = {
+                type: 'circle',
+                s: Math.random() * (6 - 3) + 3,
+                x: Math.random() * 1400,
+                y: Math.random() * 789,
+                color: colorArr[Math.floor(Math.random()*colorArr.length)],
+                x2: pointList[f][0] + 100,
+                y2: pointList[f][1] + 200,
+                delay: Math.random() * 2600
+            }
+            arr.push( obj );
+        }
+        return arr;
+
+    }
+
     var c = new MainController(
         'mainWrapper',
-        generateRandom(1000),
         1000
     );
-    document.querySelector('#mainWrapper .loading').remove();
 
-    setTimeout( ()=>{ c.animate(); }, 1000 );
+    var svgHandeler = new SvgHandeler();
+    svgHandeler.load( 'img/PeaceInc.svg').then(function() {
+
+        var pointsRaw = svgHandeler.listPointProportional(0);
+        var points = generateFromList( pointsRaw );
+        c.addDotsDataList(points);
+        setTimeout( ()=>{ c.animate(); }, 1000 );
+    });
+
 }

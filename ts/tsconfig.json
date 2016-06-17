@@ -33,6 +33,7 @@
     },
     "files": [
         "lib/lib.es6.d.ts",
+        "svgHandeler.ts",
         "main.ts",
         "dot.ts",
         "line.ts"
